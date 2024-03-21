@@ -1,26 +1,47 @@
 <h1>Nuovo Articolo</h1>
 <hr />
-<form>
+<form (ngSubmit)="aggiungiArticolo()" #laForm="ngForm">
   <div class="mb-3">
     <label for="title" class="form-label">Titolo</label>
     <input
+      #inputTitle="ngModel"
       [(ngModel)]="model.title"
       type="text"
       class="form-control"
+      [ngClass]="{
+        'is-invalid': inputTitle.invalid && inputTitle.dirty,
+        'is-valid': inputTitle.valid && inputTitle.dirty
+      }"
       id="title"
       name="title"
       placeholder="Titolo..."
+      required
     />
+    <div
+      class="invalid-feedback"
+      *ngIf="inputTitle.invalid && inputTitle.dirty"
+    >
+      Titolo non valido
+    </div>
   </div>
   <div class="mb-3">
     <label for="text" class="form-label">Testo</label>
     <textarea
       [(ngModel)]="model.text"
+      #inputText="ngModel"
       class="form-control"
+      [ngClass]="{
+        'is-invalid': inputText.invalid && inputText.dirty,
+        'is-valid': inputText.valid && inputText.dirty
+      }"
       id="text"
       name="text"
       rows="3"
+      required
     ></textarea>
+    <div class="invalid-feedback" *ngIf="inputText.invalid && inputText.dirty">
+      Testo non valido
+    </div>
   </div>
   <div class="form-check mb-3">
     <input
@@ -32,6 +53,10 @@
     />
     <label class="form-check-label" for="published">Pubblicato</label>
   </div>
-  <button type="submit" class="btn btn-primary">Salva</button>
+  <button [disabled]="!laForm.valid" type="submit" class="btn btn-primary">
+    Salva
+  </button>
 </form>
-{{ model | json }}
+<!-- <pre
+  >{{ model | json }}
+</pre> -->
